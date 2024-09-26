@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGL 2D Triangle</title>
+    <title>tugas WebGL</title>
+    <style>
+        #glCanvas {
+            border-radius: 20px;
+            border: 2px solid black;
+        }
+        button {
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
     <canvas id="glCanvas" width="600" height="400"></canvas>
+    <button id="merah">Merah</button>
+    <button id="hijau">Hijau</button>
+    <button id="biru">Biru</button>
+    <button id="reset">Reset</button>
     <script type="module" src="app.js"></script>
-    <canvas id="glCanvas" width="600" height="400"></canvas>
-    <button onclick="setColor(1,0,0)">Color 1</button>
-    <button onclick="setColor(0,1,0)">Color 2</button>
-    <button onclick="setColor(0,0,1)">Color 3</button>
-    <button onclick="setColor(0,0,0)">Reset Color</button>
 </body>
 </html>
