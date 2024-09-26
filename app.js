@@ -26,13 +26,16 @@ window.onload = function() {
 
     // Fragment shader program
     const fsSource = `
+        precision mediump float;
+        uniform vec4 uColor;
         void main() {
-            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            gl_FragColor = uColor;
         }
     `;
-
+    
     // Initialize a shader program
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+    const colorLocation = gl.getUniformLocation(shaderProgram, 'uColor');
 
     // Get the attribute location
     const vertexPosition = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
@@ -44,12 +47,12 @@ window.onload = function() {
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
     // Create an array of positions for the rectangle.
-    const positions = [
-        -0.7,  0.5,
-         0.7,  0.5,
-        -0.7, -0.5,
-         0.7, -0.5,
-    ];
+    const positions = [];
+    const segments = 64;
+    for (let i = 0; i <= segments; i++) {
+        const theta = (i / segments) * Math.PI * 2;
+        positions.push(Math.cos(theta) * 0.5, Math.sin(theta) * 0.5);
+    }
 
     // Pass the list of positions into WebGL to build the shape
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
@@ -61,8 +64,16 @@ window.onload = function() {
     // Use our shader program
     gl.useProgram(shaderProgram);
 
+    gl.uniform4f(colorLocation, 1.0, 0.0, 0.0, 1.0);
+
     // Draw the rectangle
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, segments + 2);
+}
+
+window.setColor = function(r, g, b) {
+    gl.uniform4f(colorLocation, r, g, b, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, segments + 2);
 }
 
 // Initialize a shader program, so WebGL knows how to draw our data
